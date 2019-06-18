@@ -2,10 +2,40 @@
   "An example implementation of a macro that registers and updates React
   components with the new hot-loading functionality, \"React Fresh\"."
   (:require [cljs-bean.core :refer [bean]]
-            ["react-refresh/runtime" :as react-fresh])
+            ["react-refresh/runtime" :as react-fresh]
+            [goog.object :as gobj])
   (:require-macros [react-hmr.fresh]))
 
 (def ->props bean)
+
+;; (defn ^:dev/before-load reloading []
+;;   (react-fresh/prepareUpdate))
+
+(def last-root (atom nil))
+
+(declare scheduleHotUpdate)
+
+(gobj/set js/window "__REACT_DEVTOOLS_GLOBAL_HOOK__"
+          #js {
+               ;; supportsFiber: true,
+               :supportsFiber true
+               ;; inject: injected => {
+               ;;                      scheduleHotUpdate = injected.scheduleHotUpdate;
+               ;;                      },
+               :inject (fn [injected]
+                         (set! scheduleHotUpdate (.-scheduleHotUpdate ^js injected)))
+
+               ;; onCommitFiberRoot: (id, root) => {
+               ;;                                   lastRoot = root;
+               ;;                                   },
+               :onCommitFiberRoot (fn [id root] (reset! last-root root))
+               ;; onCommitFiberUnmount: () => {}, 
+               :onCommitFiberUnmount (fn [])
+               })
+
+(defn reload []
+  (let [hot-update (react-fresh/prepareUpdate)]
+    (scheduleHotUpdate @last-root hot-update)))
 
 (defn register!
   "Registers a component with the React Fresh runtime.

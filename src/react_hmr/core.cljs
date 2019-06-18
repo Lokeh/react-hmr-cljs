@@ -1,14 +1,15 @@
 (ns react-hmr.core
-  (:require [devcards.core :as dc :include-macros true]
+  (:require ;; [devcards.core :as dc :include-macros true]
             [hiccup-next.react :refer [hiccup-element]]
             ["react" :as react]
+            ["react-dom" :as react-dom]
             [cljs-bean.core :refer [bean]]
-            [react-hmr.fresh :refer [defnc]]))
+            [react-hmr.fresh :as fresh :refer [defnc]]))
 
 
 ;; Restart Devcards on each hot load
-(defn ^:dev/after-load ^:export start []
-  (dc/start-devcard-ui!))
+;; (defn ^:dev/after-load ^:export start []
+;;   (dc/start-devcard-ui!))
 
 ;; Make printing React elements work
 (when (exists? js/Symbol)
@@ -32,8 +33,8 @@
 
 
 ;; render in the devcards UI
-(dc/defcard my-first-component
-  #h/n [MyFirstComponent {:name "joe"}])
+;; (dc/defcard my-first-component
+;;   #h/n [MyFirstComponent {:name "joe"}])
 
 
 
@@ -49,8 +50,8 @@
                          :value name
                          :on-change #(set-name (.. % -target -value))}]]]))
 
-(dc/defcard my-stateful-component
-  #h/n [MyStatefulComponent])
+;; (dc/defcard my-stateful-component
+;;   #h/n [MyStatefulComponent])
 
 
 ;;
@@ -60,14 +61,14 @@
 (defnc MyFreshComponent [props]
   (let [[name set-name] (react/useState "fresh")
         [toggle set-toggle] (react/useState true)]
-    #h/n [:div
+    #h/n [:div {:style {:background "green"}}
           [:div "Hello, " name]
           [:div [:input {:type "text"
                          :value name
                          :on-change #(set-name (.. % -target -value))}]]]))
 
-(dc/defcard my-fresh-component
-  #h/n [MyFreshComponent])
+;; (dc/defcard my-fresh-component
+;;   #h/n [MyFreshComponent])
 
 
 
@@ -79,3 +80,10 @@
 ;; a reload.
 ;;
 ;;
+
+(defn start []
+  (react-dom/render #h/n [MyFreshComponent]
+                    (. js/document getElementById "app")))
+
+(defn ^:dev/after-load reload []
+  (fresh/reload))
