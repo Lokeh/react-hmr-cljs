@@ -1,0 +1,8 @@
+{:paths ["src"]
+ :deps {lilactown/thumps
+        {:local/root "../hiccup-tag/"}
+        ;; {:git/url "https://github.com/Lokeh/thumps.git"
+                         ;;  :sha "8545fbb6e714c36a45f588071805bb80c740a6f6"}
+        cljs-bean {:mvn/version "0.5.0"}
+        binaryage/devtools {:mvn/version "0.9.7"}
+        devcards {:mvn/version "0.2.5"}}}
