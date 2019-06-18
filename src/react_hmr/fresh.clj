@@ -23,14 +23,33 @@
       (and (symbol? fst) (str/starts-with? (name fst)
                                            "use")))))
 
+;; TODO:
+;; - Detect custom hooks
+;; - Handle re-ordering
+;;   - Detect hooks used in let-bindings and add left-hand side to signature
+;;   - ???
+
 (defmacro defnc
   "Defines a new React component."
   [display-name props-bindings & body]
-  (let [usables (find-all hook?
-                          body)]
+  (let [usables (find-all hook? body)]
     `(do
+       (def sig# (signature!))
        (defn ~display-name [props#]
+         (sig#)
          (let [~props-bindings [(->props props#)]] ;; `props` is a proxy to `bean`
            ~@body))
-       (signature ~display-name (list ~@(map str usables)))
-       (register ~display-name ~(str display-name)))))
+       (sig# ~display-name ~(str/join usables))
+       (register! ~display-name ~(str display-name)))))
+
+
+(defmacro defhook
+  "Defines a new custom Hook for React"
+  [display-name args & body]
+  (let [usables (find-all hook? body)]
+  `(do
+     (def sig# (signature!))
+     (defn ~display-name ~args
+       (sig#)
+       ~@body)
+     (sig# ~display-name ~(str/join usables)))))

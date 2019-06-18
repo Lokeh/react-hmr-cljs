@@ -58,7 +58,8 @@
 ;;
 
 (defnc MyFreshComponent [props]
-  (let [[name set-name] (react/useState "fresh")]
+  (let [[name set-name] (react/useState "fresh")
+        [toggle set-toggle] (react/useState true)]
     #h/n [:div
           [:div "Hello, " name]
           [:div [:input {:type "text"
@@ -67,6 +68,7 @@
 
 (dc/defcard my-fresh-component
   #h/n [MyFreshComponent])
+
 
 
 ;;
