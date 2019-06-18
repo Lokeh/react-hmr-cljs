@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd react
+yarn
+yarn build react/index react-dom scheduler react-refresh
+cp -r react/build/node_modules/* node_modules/
