@@ -26,8 +26,7 @@
          0 (let [[type key force-reset get-custom-hooks] args]
              (reset! saved-type type)
              (reset! custom-hooks? (fn? get-custom-hooks))
-             (react-fresh/setSignature type key force-reset get-custom-hooks)
-             )
+             (react-fresh/setSignature type key force-reset get-custom-hooks))
          1 (when @custom-hooks?
              (react-fresh/collectCustomHooksForSignature @saved-type))
          nil)
