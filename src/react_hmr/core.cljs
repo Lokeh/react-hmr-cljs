@@ -7,10 +7,6 @@
             [react-hmr.fresh :as fresh :refer [defnc]]))
 
 
-;; Restart Devcards on each hot load
-;; (defn ^:dev/after-load ^:export start []
-;;   (dc/start-devcard-ui!))
-
 ;; Make printing React elements work
 (when (exists? js/Symbol)
   (extend-protocol IPrintWithWriter
@@ -32,11 +28,6 @@
     #h/n [:div "Hello, " name]))
 
 
-;; render in the devcards UI
-;; (dc/defcard my-first-component
-;;   #h/n [MyFirstComponent {:name "joe"}])
-
-
 
 ;;
 ;; Hooks
@@ -50,26 +41,28 @@
                          :value name
                          :on-change #(set-name (.. % -target -value))}]]]))
 
-;; (dc/defcard my-stateful-component
-;;   #h/n [MyStatefulComponent])
 
 
 ;;
-;; Using the `defnc` macro
+;; Using the Hot Reloadable `defnc` macro
 ;;
 
 (defnc MyFreshComponent [props]
-  (let [[name set-name] (react/useState "fresh")
-        [toggle set-toggle] (react/useState true)]
-    #h/n [:div {:style {:background "green"}}
+  (let [[count set-count] (react/useState 0)
+        [name set-name] (react/useState "React")]
+    (react/useEffect (fn []
+                       (let [interval (js/setInterval
+                                       #(set-count inc)
+                                       1000)]
+                         #(js/clearInterval interval))
+                       #js []))
+    ;; kept it's state!
+    #h/n [:div {:style {:background "pink"}}
           [:div "Hello, " name]
+          [:div [:button {:on-click #(set-count inc)} "+ " count]]
           [:div [:input {:type "text"
                          :value name
                          :on-change #(set-name (.. % -target -value))}]]]))
-
-;; (dc/defcard my-fresh-component
-;;   #h/n [MyFreshComponent])
-
 
 
 ;;
