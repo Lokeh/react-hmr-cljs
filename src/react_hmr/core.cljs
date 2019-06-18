@@ -2,7 +2,8 @@
   (:require [devcards.core :as dc :include-macros true]
             [hiccup-next.react :refer [hiccup-element]]
             ["react" :as react]
-            [cljs-bean.core :refer [bean]]))
+            [cljs-bean.core :refer [bean]]
+            [react-hmr.fresh :refer [defnc]]))
 
 
 ;; Restart Devcards on each hot load
@@ -48,6 +49,31 @@
                          :value name
                          :on-change #(set-name (.. % -target -value))}]]]))
 
-
 (dc/defcard my-stateful-component
   #h/n [MyStatefulComponent])
+
+
+;;
+;; Using the `defnc` macro
+;;
+
+(defnc MyFreshComponent [props]
+  (let [[name set-name] (react/useState "fresh")]
+    #h/n [:div
+          [:div "Hello, " name]
+          [:div [:input {:type "text"
+                         :value name
+                         :on-change #(set-name (.. % -target -value))}]]]))
+
+(dc/defcard my-fresh-component
+  #h/n [MyFreshComponent])
+
+
+;;
+;;
+;; Editing this file will automatically hot-load your code in the browser
+;;
+;; Try changing the state of the "fresh" component, then touch the file to cause
+;; a reload.
+;;
+;;
