@@ -1,7 +1,7 @@
 (ns react-hmr.core
   (:require ["react" :as react]
             ["react-dom" :as react-dom]
-            [react-hmr.fresh :as fresh :refer [defnc]]
+            [react-hmr.refresh :as refresh :refer [defnc]]
             [react-hmr.dep-b :as b]))
 
 

@@ -1,4 +1,4 @@
-(ns react-hmr.fresh
+(ns react-hmr.refresh
   "An example implementation of a macro that registers and updates React
   components with the new hot-loading functionality, \"React Fresh\"."
   (:require [clojure.walk]

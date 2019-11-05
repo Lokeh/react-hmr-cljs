@@ -1,10 +1,10 @@
-(ns react-hmr.fresh
+(ns react-hmr.refresh
   "An example implementation of a macro that registers and updates React
   components with the new hot-loading functionality, \"React Fresh\"."
   (:require [cljs-bean.core :refer [bean]]
             ["react-refresh/runtime" :as react-refresh]
             [goog.object :as gobj])
-  (:require-macros [react-hmr.fresh]))
+  (:require-macros [react-hmr.refresh]))
 
 (def ->props bean)
 
