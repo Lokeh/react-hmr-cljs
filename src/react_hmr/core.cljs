@@ -1,7 +1,8 @@
 (ns react-hmr.core
   (:require ["react" :as react]
             ["react-dom" :as react-dom]
-            [react-hmr.fresh :as fresh :refer [defnc]]))
+            [react-hmr.fresh :as fresh :refer [defnc]]
+            [react-hmr.dep-b :as b]))
 
 
 (defn $
@@ -32,15 +33,9 @@
   [props]
   (let [[count set-count] (react/useState 0)
         [name set-name] (react/useState "React Refresh")]
-    (react/useEffect (fn []
-                       (let [interval (js/setInterval
-                                       #(set-count inc)
-                                       1000)]
-                         #(js/clearInterval interval)))
-                     (array))
     ;; kept it's state!
     ($ :div {:style {:background "pink"}}
-       ($ :div "Hello ", name)
+       ($ :div (b/greet name))
        ($ :div ($ :button {:onClick #(set-count inc)} "+ " count))
        ($ :div ($ :input {:type "text"
                           :value name
