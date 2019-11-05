@@ -1,5 +1,8 @@
 ;; shadow-cljs configuration
-{:deps true
+{:dependencies [[cljs-bean "0.5.0"]
+                [binaryage/devtools "0.9.7"]
+                [devcards "0.2.5"]]
+ :source-paths ["src"]
  :builds
  {:app {:target :browser
         :output-dir "public/js"

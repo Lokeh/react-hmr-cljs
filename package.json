@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "shadow-cljs": "^2.8.39",
+    "shadow-cljs": "^2.8.69",
     "showdown": "^1.9.0"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-refresh": "^0.6.0"
   }
 }

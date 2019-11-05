@@ -37,10 +37,11 @@
        (def sig# (signature!))
        (defn ~display-name [props#]
          (sig#)
-         (let [~props-bindings [(->props props#)]] ;; `props` is a proxy to `bean`
+         (let [~props-bindings [(->props props#)]]
            ~@body))
-       (sig# ~display-name ~(str/join usables))
-       (register! ~display-name ~(str display-name)))))
+       (prn ~(str/join usables))
+       (sig# ~display-name ~(str/join usables) nil nil)
+       (register! ~display-name ~(str *ns* "/" display-name)))))
 
 
 (defmacro defhook
