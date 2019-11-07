@@ -39,9 +39,17 @@
          (sig#)
          (let [~props-bindings [(->props props#)]]
            ~@body))
+       (goog.object/set ~display-name "displayName"
+                        ~(str *ns* "/" display-name))
        (prn ~(str/join usables))
        (sig# ~display-name ~(str/join usables) nil nil)
        (register! ~display-name ~(str *ns* "/" display-name)))))
+
+
+(defmacro defmemo
+  [display-name component]
+  `(do (def ~display-name (memo ~component))
+       (register! ~display-name ~(str *ns* "/" display-name))))
 
 
 (defmacro defhook

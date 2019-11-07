@@ -1,4 +1,4 @@
-(ns ^:dev/always react-hmr.core
+(ns react-hmr.core
   (:require ["react-dom" :as react-dom]
             ["react" :as react]
             [react-hmr.react :refer [$]]
@@ -24,7 +24,9 @@
                              :value name
                              :onChange #(set-name (.. % -target -value))})))
        ($ :br)
-       ($ z/component))))
+       ($ z/component {:name "child in another file"})
+       ($ :br)
+       ($ z/memo-component {:name "memoized child in another file"}))))
 
 
 ;;
