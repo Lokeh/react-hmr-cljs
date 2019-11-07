@@ -1,3 +1,3 @@
 (ns react-hmr.dep-c)
 
-(def greeting "Hello, ")
+(def greeting "Bonjour, ")

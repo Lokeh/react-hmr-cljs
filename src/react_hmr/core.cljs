@@ -1,28 +1,10 @@
-(ns react-hmr.core
-  (:require ["react" :as react]
-            ["react-dom" :as react-dom]
+(ns ^:dev/always react-hmr.core
+  (:require ["react-dom" :as react-dom]
+            ["react" :as react]
+            [react-hmr.react :refer [$]]
             [react-hmr.refresh :as refresh :refer [defnc]]
-            [react-hmr.dep-b :as b]))
-
-
-(defn $
-  [type & args]
-  (let [type' (if (keyword? type)
-                (name type)
-                type)]
-    (if (map? (first args))
-      (apply react/createElement type' (clj->js (first args)) (rest args))
-      (apply react/createElement type' nil args))))
-
-
-;; Make printing React elements work
-(when (exists? js/Symbol)
-  (extend-protocol IPrintWithWriter
-    js/Symbol
-    (-pr-writer [sym writer _]
-      (-write writer (str "\"" (.toString sym) "\"")))))
-
-
+            [react-hmr.dep-b :as b]
+            [react-hmr.dep-z :as z]))
 
 
 ;;
@@ -34,12 +16,15 @@
   (let [[count set-count] (react/useState 0)
         [name set-name] (react/useState "React Refresh")]
     ;; kept it's state!
-    ($ :div {:style {:background "pink"}}
-       ($ :div (b/greet name))
-       ($ :div ($ :button {:onClick #(set-count inc)} "+ " count))
-       ($ :div ($ :input {:type "text"
-                          :value name
-                          :onChange #(set-name (.. % -target -value))})))))
+    ($ react/Fragment
+       ($ :div {:style {:background "pink"}}
+          ($ :div (b/greet name))
+          ($ :div ($ :button {:onClick #(set-count inc)} "+ " count))
+          ($ :div ($ :input {:type "text"
+                             :value name
+                             :onChange #(set-name (.. % -target -value))})))
+       ($ :br)
+       ($ z/component))))
 
 
 ;;
