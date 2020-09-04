@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "shadow-cljs": "^2.8.69",
-    "showdown": "^1.9.0"
+    "showdown": "^1.9.1"
   },
   "dependencies": {
     "react": "^16.11.0",
